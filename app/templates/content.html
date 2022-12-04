@@ -10,11 +10,17 @@
                 <div class="card-body">
                     <form action="/add" method="post">
                         <div class="form-group">
-                            <input class="form-control" type="text" name="title" placeholder="Title" required>
+                            <input class="form-control" type="text" name="name" placeholder="Name" required>
                         </div>
                         <div class="form-group">
                             <textarea class="form-control" name="description" cols="100"
                                       placeholder="Add a Description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="author" placeholder="Author" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="url" placeholder="URL" required>
                         </div>
                         <button class="btn btn-primary" type="submit">
                             Add
@@ -29,28 +35,30 @@
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Title</th>
+                    <th>Name</th>
                     <th>Description</th>
+                    <th>Author</th>
                     <th>Operations</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for entry in entries %}
+                {% for game in games %}
                 <tr>
-                    <td>{{ entry.id }}</td>
-                    <td><strong>{{ entry.title }}</strong></td>
-                    <td>{{ entry.description }}</td>
+                    <td>{{ game.id }}</td>
+                    <td><strong>{{ game.name }}</strong></td>
+                    <td>{{ game.description }}</td>
+                    <td>{{ game.author }}</td>
                     <td>
-                        <a class="{{ 'btn btn-success' if entry.status else 'btn btn-dark'}}"
-                           href="/turn/{{ entry.id }}">
-                            Turn Status
+                        <a class="btn btn-primary"
+                           href="/show/{{ game.id }}">
+                            Show
                         </a>
                         <a class="btn btn-danger"
-                           href="/delete/{{ entry.id }}">
+                           href="/delete/{{ game.id }}">
                             Delete
                         </a>
                         <a class="btn btn-info"
-                           href="/update/{{ entry.id }}">
+                           href="/update/{{ game.id }}">
                             Edit
                         </a>
                     </td>
@@ -65,8 +73,3 @@
 </div>
 
 {% endblock %}
-
-
-
-
-

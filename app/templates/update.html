@@ -8,13 +8,19 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="/update/{{ entry.id }}" method="post">
+                    <form action="/update/{{ game.id }}" method="post">
                         <div class="form-group">
-                            <input class="form-control" type="text" name="title" placeholder="Title" value="{{ entry.title }}" required>
+                            <input class="form-control" type="text" name="name" placeholder="Name" value="{{ game.name }}" required>
                         </div>
                         <div class="form-group">
                             <textarea class="form-control" name="description" cols="100"
-                                      placeholder="Add a Description" required> {{ entry.description }} </textarea>
+                                      placeholder="Add a Description" required> {{ game.description }} </textarea>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="author" placeholder="Author" value="{{ game.author }}" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="url" placeholder="URL" value="{{ game.url }}" required>
                         </div>
                         <button class="btn btn-primary" type="submit">
                             Update

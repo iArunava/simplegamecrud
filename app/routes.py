@@ -1,91 +1,82 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, flash
 from app import app, db
-from app.models import Entry
+from app.models import Game
 
-jedi = "of the jedi"
+ERROR={
+1: "Validation Error"
+}
 
 @app.route('/')
 @app.route('/index')
 def index():
-    # entries = [
-    #     {
-    #         'id' : 1,
-    #         'title': 'test title 1',
-    #         'description' : 'test desc 1',
-    #         'status' : True
-    #     },
-    #     {
-    #         'id': 2,
-    #         'title': 'test title 2',
-    #         'description': 'test desc 2',
-    #         'status': False
-    #     }
-    # ]
-    entries = Entry.query.all()
-    return render_template('index.html', entries=entries)
+    games = Game.query.all()
+    return render_template('index.html', games=games)
 
 @app.route('/add', methods=['POST'])
 def add():
     if request.method == 'POST':
         form = request.form
-        title = form.get('title')
+        name = form.get('name')
         description = form.get('description')
-        if not title or description:
-            entry = Entry(title = title, description = description)
+        author = form.get('author')
+        url = form.get('url')
+        if not name or description:
+            #try:
+            entry = Game(name = name, description = description, author=author, url=url)
             db.session.add(entry)
             db.session.commit()
+            #except:
+                #return redirect("/error/1")
             return redirect('/')
+    return "unknown method"
 
-    return "of the jedi"
+@app.route('/show/<int:id>')
+def showRoute(id):
+    if not id or id != 0:
+        entry = Game.query.get(id)
+        if entry:
+            return render_template('show.html', game=entry)
+    return "unknown game"
 
 @app.route('/update/<int:id>')
 def updateRoute(id):
     if not id or id != 0:
-        entry = Entry.query.get(id)
+        entry = Game.query.get(id)
         if entry:
-            return render_template('update.html', entry=entry)
-
-    return "of the jedi"
+            return render_template('update.html', game=entry)
+    return "unknown method"
 
 @app.route('/update/<int:id>', methods=['POST'])
 def update(id):
     if not id or id != 0:
-        entry = Entry.query.get(id)
+        entry = Game.query.get(id)
         if entry:
             form = request.form
-            title = form.get('title')
+            name = form.get('name')
             description = form.get('description')
-            entry.title = title
+            author = form.get('author')
+            url = form.get('url')
+            entry.name = name
             entry.description = description
+            entry.author = author
+            entry.url = url
             db.session.commit()
         return redirect('/')
-
-    return "of the jedi"
-
-
+    return "unknown methods"
 
 @app.route('/delete/<int:id>')
 def delete(id):
     if not id or id != 0:
-        entry = Entry.query.get(id)
+        entry = Game.query.get(id)
         if entry:
             db.session.delete(entry)
             db.session.commit()
         return redirect('/')
+    return "unknown method"
 
-    return "of the jedi"
-
-@app.route('/turn/<int:id>')
-def turn(id):
-    if not id or id != 0:
-        entry = Entry.query.get(id)
-        if entry:
-            entry.status = not entry.status
-            db.session.commit()
-        return redirect('/')
-
-    return "of the jedi"
-
-# @app.errorhandler(Exception)
-# def error_page(e):
-#     return "of the jedi"
+@app.route('/error/<int:id>')
+def error(id):
+    id=int(id)
+    if id and int(id) in ERROR.keys():
+        return render_template('error.html', message=ERROR[id])
+    return "unknown method"

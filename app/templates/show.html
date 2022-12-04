@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                            <p> {{ game.name }} </p>
+                            <p> {{ game.description }} </p>
+                            <p> {{ game.author }} </p>
+                            <p> {{ game.time_created }} </p>
+                            <p> {{ game.url }} </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
